@@ -34,8 +34,7 @@ export function LoginClient() {
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data?.error ?? "Login failed");
-            router.push(next);
-            router.refresh();
+            window.location.href = next;
           } catch (err) {
             setError(err instanceof Error ? err.message : "Login failed");
           } finally {
@@ -82,4 +81,3 @@ export function LoginClient() {
     </div>
   );
 }
-

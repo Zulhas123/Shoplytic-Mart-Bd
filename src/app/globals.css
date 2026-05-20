@@ -10,7 +10,12 @@ body {
   background: rgb(248 250 252);
 }
 
+input,
+textarea,
+select {
+  border-color: transparent !important;
+}
+
 * {
   box-sizing: border-box;
 }
-

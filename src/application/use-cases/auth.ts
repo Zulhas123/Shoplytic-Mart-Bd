@@ -43,10 +43,10 @@ export class AuthUseCases {
 
   async loginAdmin(input: z.infer<typeof adminLoginSchema>) {
     if (input.name.trim().toLowerCase() !== "admin") throw new Error("Invalid credentials");
-    if (input.password !== "admin123") throw new Error("Invalid credentials");
 
     const existingAdmin = await this.users.findByName("admin");
     if (!existingAdmin) {
+      if (input.password !== "admin123") throw new Error("Invalid credentials");
       const created = await this.users.create({
         name: "admin",
         email: null,
@@ -56,7 +56,7 @@ export class AuthUseCases {
       return created;
     }
 
-    const ok = await verifyPassword("admin123", existingAdmin.passwordHash);
+    const ok = await verifyPassword(input.password, existingAdmin.passwordHash);
     if (!ok) throw new Error("Invalid credentials");
     const { passwordHash: _pw, ...safeAdmin } = existingAdmin;
     return safeAdmin;

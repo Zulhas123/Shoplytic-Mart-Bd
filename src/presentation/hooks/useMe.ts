@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export type MeUser = {
   id: string;
-  email: string;
+  email: string | null;
   name: string;
   address: string | null;
   role: "USER" | "ADMIN";
@@ -35,4 +35,3 @@ export function useMe() {
 
   return { user, loading, refresh: async () => window.location.reload() };
 }
-
