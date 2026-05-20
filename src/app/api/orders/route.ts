@@ -1,30 +1,35 @@
 import { OrderUseCases, createOrderSchema } from "@/application/use-cases/orders";
-import { requireSession } from "@/infrastructure/api/auth/session";
+import { getGuestKey, setGuestKey } from "@/infrastructure/api/guest/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
-import { jsonBadRequest, jsonCreated, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
+import { jsonBadRequest, jsonOk } from "@/shared/utils/http";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const session = await requireSession();
-    const orders = await new OrderUseCases(new PrismaOrderRepository()).listByUser(session.userId);
+    const guestKey = await getGuestKey();
+    const orders = guestKey
+      ? await new OrderUseCases(new PrismaOrderRepository()).listByGuestKey(guestKey)
+      : [];
     return jsonOk({ orders });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Invalid request";
-    if (message === "Unauthorized") return jsonUnauthorized();
     return jsonBadRequest(message);
   }
 }
 
 export async function POST(req: Request) {
   try {
-    const session = await requireSession();
+    const currentGuestKey = await getGuestKey();
     const body = await req.json();
     const input = createOrderSchema.parse(body);
-    const order = await new OrderUseCases(new PrismaOrderRepository()).create(session.userId, input);
-    return jsonCreated({ order });
+
+    const guestKey = currentGuestKey ?? crypto.randomUUID();
+    const order = await new OrderUseCases(new PrismaOrderRepository()).createGuest(guestKey, input);
+    const res = NextResponse.json({ order }, { status: 201 });
+    if (!currentGuestKey) setGuestKey(res, guestKey);
+    return res;
   } catch (e) {
     const message = e instanceof Error ? e.message : "Invalid request";
-    if (message === "Unauthorized") return jsonUnauthorized();
     return jsonBadRequest(message);
   }
 }

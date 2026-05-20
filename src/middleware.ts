@@ -24,15 +24,7 @@ export function middleware(req: NextRequest) {
   const isAuthed = Boolean(payload?.sub);
   const role = payload?.role as string | undefined;
 
-  const needsUser = pathname.startsWith("/orders") || pathname.startsWith("/profile") || pathname.startsWith("/checkout");
   const needsAdmin = pathname.startsWith("/admin");
-
-  if (needsUser && !isAuthed) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("next", pathname);
-    return NextResponse.redirect(url);
-  }
 
   if (needsAdmin) {
     if (!isAuthed) {
@@ -52,5 +44,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/orders/:path*", "/profile", "/checkout", "/admin/:path*"]
+  matcher: ["/admin/:path*"]
 };

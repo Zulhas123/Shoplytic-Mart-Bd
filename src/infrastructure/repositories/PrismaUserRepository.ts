@@ -5,7 +5,7 @@ export class PrismaUserRepository implements UserRepository {
   async create(input: CreateUserInput) {
     const user = await prisma.user.create({
       data: {
-        email: input.email,
+        email: input.email ?? null,
         passwordHash: input.passwordHash,
         name: input.name,
         address: input.address ?? null,
@@ -24,9 +24,9 @@ export class PrismaUserRepository implements UserRepository {
     return user;
   }
 
-  async findByEmail(email: string) {
+  async findByName(name: string) {
     return prisma.user.findUnique({
-      where: { email },
+      where: { name },
       select: {
         id: true,
         email: true,
@@ -85,5 +85,11 @@ export class PrismaUserRepository implements UserRepository {
       }
     });
   }
-}
 
+  async updatePassword(userId: string, passwordHash: string) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash }
+    });
+  }
+}

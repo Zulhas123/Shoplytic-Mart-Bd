@@ -3,9 +3,8 @@ import { LoginClient } from "@/app/login/login-client";
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="text-sm text-slate-600">Loading…</div>}>
+    <Suspense fallback={<div className="text-sm text-slate-600">Loading...</div>}>
       <LoginClient />
     </Suspense>
   );
 }
-

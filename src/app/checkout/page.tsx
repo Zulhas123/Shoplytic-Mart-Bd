@@ -49,7 +49,14 @@ export default function CheckoutPage() {
                     method: "POST",
                     headers: { "content-type": "application/json" },
                     body: JSON.stringify({
-                      shipping: { name, email, address1, address2: address2 || null, city, postal },
+                      shipping: {
+                        name,
+                        email: email.trim() ? email : null,
+                        address1,
+                        address2: address2 || null,
+                        city,
+                        postal
+                      },
                       items: items.map((it) => ({
                         productId: it.productId,
                         name: it.name,
@@ -79,13 +86,12 @@ export default function CheckoutPage() {
                 />
               </label>
               <label className="block space-y-1">
-                <span className="text-sm font-medium">Email</span>
+                <span className="text-sm font-medium">Email (optional)</span>
                 <input
                   className="w-full rounded-md border border-slate-200 px-3 py-2"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
-                  required
                 />
               </label>
               <label className="block space-y-1">
@@ -130,7 +136,7 @@ export default function CheckoutPage() {
                 disabled={loading}
                 type="submit"
               >
-                {loading ? "Placing order…" : "Place order"}
+                {loading ? "Placing order..." : "Place order"}
               </button>
             </form>
           </div>
@@ -160,4 +166,3 @@ export default function CheckoutPage() {
     </div>
   );
 }
-

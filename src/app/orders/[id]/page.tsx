@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { OrderUseCases } from "@/application/use-cases/orders";
-import { requireSession } from "@/infrastructure/api/auth/session";
+import { getGuestKey } from "@/infrastructure/api/guest/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
 
 export const dynamic = "force-dynamic";
 
 export default async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
-  const session = await requireSession();
+  const guestKey = await getGuestKey();
   const { id } = await params;
-  const order = await new OrderUseCases(new PrismaOrderRepository()).getByIdForUser(id, session.userId);
+  const order = guestKey
+    ? await new OrderUseCases(new PrismaOrderRepository()).getByIdForGuestKey(id, guestKey)
+    : null;
 
   if (!order) {
     return (
@@ -35,6 +37,9 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
           <div className="text-right">
             <div className="text-xs text-slate-600">Total</div>
             <div className="text-lg font-semibold">${(order.totalCents / 100).toFixed(2)}</div>
+            <Link className="mt-2 inline-block text-sm font-semibold text-slate-900 underline" href={`/orders/${order.id}/invoice`}>
+              Invoice
+            </Link>
           </div>
         </div>
 
@@ -43,7 +48,9 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
             <h2 className="text-sm font-semibold">Shipping</h2>
             <div className="mt-2 text-sm text-slate-700">
               <div>{order.shippingName}</div>
-              <div className="text-slate-600">{order.shippingEmail}</div>
+              {order.shippingEmail ? (
+                <div className="text-slate-600">{order.shippingEmail}</div>
+              ) : null}
               <div className="mt-2">
                 <div>{order.shippingAddress1}</div>
                 {order.shippingAddress2 ? <div>{order.shippingAddress2}</div> : null}

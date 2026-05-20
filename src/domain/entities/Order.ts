@@ -1,4 +1,13 @@
-export type OrderStatus = "PENDING" | "PAID" | "SHIPPED" | "DELIVERED" | "CANCELED";
+export type OrderStatus =
+  | "PENDING"
+  | "CONFIRMED"
+  | "REJECTED"
+  | "PAID"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CANCELED";
+
+export type PaymentMethod = "BKASH" | "NAGAD" | "MANUAL";
 
 export type OrderItem = {
   id: string;
@@ -10,10 +19,14 @@ export type OrderItem = {
 
 export type Order = {
   id: string;
-  userId: string;
+  userId: string | null;
+  guestKey?: string | null;
   status: OrderStatus;
+  paymentMethod?: PaymentMethod | null;
+  paymentReference?: string | null;
+  paidAt?: Date | null;
   shippingName: string;
-  shippingEmail: string;
+  shippingEmail: string | null;
   shippingAddress1: string;
   shippingAddress2: string | null;
   shippingCity: string;
@@ -23,4 +36,3 @@ export type Order = {
   updatedAt: Date;
   items: OrderItem[];
 };
-

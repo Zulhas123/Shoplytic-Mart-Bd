@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { OrderUseCases } from "@/application/use-cases/orders";
-import { requireSession } from "@/infrastructure/api/auth/session";
+import { getGuestKey } from "@/infrastructure/api/guest/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
 
 export const dynamic = "force-dynamic";
 
 export default async function OrdersPage() {
-  const session = await requireSession();
-  const orders = await new OrderUseCases(new PrismaOrderRepository()).listByUser(session.userId);
+  const guestKey = await getGuestKey();
+  const orders = guestKey
+    ? await new OrderUseCases(new PrismaOrderRepository()).listByGuestKey(guestKey)
+    : [];
 
   return (
     <div className="space-y-4">

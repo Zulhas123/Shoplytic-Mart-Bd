@@ -1,4 +1,4 @@
-import { AuthUseCases, loginSchema } from "@/application/use-cases/auth";
+import { AuthUseCases, adminLoginSchema } from "@/application/use-cases/auth";
 import { PrismaUserRepository } from "@/infrastructure/repositories/PrismaUserRepository";
 import { authCookie } from "@/infrastructure/api/auth/session";
 import { signAuthToken } from "@/shared/utils/jwt";
@@ -7,11 +7,11 @@ import { jsonBadRequest, jsonOk } from "@/shared/utils/http";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const input = loginSchema.parse(body);
+    const input = adminLoginSchema.parse(body);
     const usersRepo = new PrismaUserRepository();
     const useCases = new AuthUseCases(usersRepo);
 
-    const user = await useCases.login(input);
+    const user = await useCases.loginAdmin(input);
     const token = signAuthToken({ sub: user.id, role: user.role });
 
     const res = jsonOk({ user });
@@ -22,4 +22,3 @@ export async function POST(req: Request) {
     return jsonBadRequest(message);
   }
 }
-

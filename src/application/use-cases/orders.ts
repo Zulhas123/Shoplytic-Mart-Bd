@@ -4,7 +4,7 @@ import type { OrderRepository } from "@/domain/repositories/OrderRepository";
 export const createOrderSchema = z.object({
   shipping: z.object({
     name: z.string().min(1).max(80),
-    email: z.string().email(),
+    email: z.string().email().optional().nullable(),
     address1: z.string().min(1).max(120),
     address2: z.string().max(120).optional().nullable(),
     city: z.string().min(1).max(80),
@@ -25,8 +25,8 @@ export const createOrderSchema = z.object({
 export class OrderUseCases {
   constructor(private readonly orders: OrderRepository) {}
 
-  create(userId: string, input: z.infer<typeof createOrderSchema>) {
-    return this.orders.create({ userId, shipping: input.shipping, items: input.items });
+  createGuest(guestKey: string, input: z.infer<typeof createOrderSchema>) {
+    return this.orders.create({ userId: null, guestKey, shipping: input.shipping, items: input.items });
   }
 
   listByUser(userId: string) {
@@ -37,8 +37,23 @@ export class OrderUseCases {
     return this.orders.getByIdForUser(orderId, userId);
   }
 
+  listByGuestKey(guestKey: string) {
+    return this.orders.listByGuestKey(guestKey);
+  }
+
+  getByIdForGuestKey(orderId: string, guestKey: string) {
+    return this.orders.getByIdForGuestKey(orderId, guestKey);
+  }
+
   listAll() {
     return this.orders.listAll();
   }
-}
 
+  updateStatus(orderId: string, status: "PENDING" | "CONFIRMED" | "REJECTED") {
+    return this.orders.updateStatus(orderId, status);
+  }
+
+  submitPayment(orderId: string, input: { paymentMethod: "BKASH" | "NAGAD" | "MANUAL"; paymentReference: string }) {
+    return this.orders.submitPayment(orderId, input);
+  }
+}

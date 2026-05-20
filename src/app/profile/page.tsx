@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 type Profile = {
   id: string;
-  email: string;
+  email: string | null;
   name: string;
   address: string | null;
   role: "USER" | "ADMIN";
@@ -39,7 +39,7 @@ export default function ProfilePage() {
     };
   }, []);
 
-  if (loading) return <div className="text-sm text-slate-600">Loading…</div>;
+  if (loading) return <div className="text-sm text-slate-600">Loading...</div>;
   if (!profile) return <div className="text-sm text-slate-600">Not logged in.</div>;
 
   return (
@@ -47,8 +47,7 @@ export default function ProfilePage() {
       <h1 className="text-2xl font-semibold tracking-tight">Profile</h1>
       <div className="rounded-lg border border-slate-200 bg-white p-6">
         <div className="text-sm text-slate-600">
-          Signed in as <span className="font-medium text-slate-900">{profile.email}</span> (
-          {profile.role})
+          Signed in as <span className="font-medium text-slate-900">{profile.name}</span> ({profile.role})
         </div>
 
         {error ? (
@@ -92,7 +91,7 @@ export default function ProfilePage() {
               className="w-full rounded-md border border-slate-200 px-3 py-2"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="Street, city…"
+              placeholder="Street, city..."
             />
           </label>
           <button
@@ -100,11 +99,10 @@ export default function ProfilePage() {
             disabled={saving}
             type="submit"
           >
-            {saving ? "Saving…" : "Save changes"}
+            {saving ? "Saving..." : "Save changes"}
           </button>
         </form>
       </div>
     </div>
   );
 }
-
