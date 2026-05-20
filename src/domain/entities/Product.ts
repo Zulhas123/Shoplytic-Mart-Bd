@@ -5,7 +5,7 @@ export type Product = {
   priceCents: number;
   imageUrl: string | null;
   categoryId: string | null;
+  category?: { name: string } | null;
   createdAt: Date;
   updatedAt: Date;
 };
-

@@ -1,11 +1,28 @@
 import { z } from "zod";
 import type { ProductRepository } from "@/domain/repositories/ProductRepository";
 
+const imageUrlSchema = z
+  .string()
+  .trim()
+  .refine(
+    (value) => {
+      if (!value) return true;
+      if (value.startsWith("/")) return true; // local uploads like /uploads/...
+      try {
+        new URL(value);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    { message: "Invalid image URL" }
+  );
+
 export const productCreateSchema = z.object({
   name: z.string().min(1).max(120),
   description: z.string().min(1).max(2000),
   priceCents: z.number().int().min(0),
-  imageUrl: z.string().url().optional().nullable(),
+  imageUrl: imageUrlSchema.optional().nullable(),
   categoryId: z.string().optional().nullable()
 });
 
@@ -34,4 +51,3 @@ export class ProductUseCases {
     return this.products.delete(id);
   }
 }
-

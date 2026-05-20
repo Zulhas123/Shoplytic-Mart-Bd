@@ -45,6 +45,7 @@ export class PrismaProductRepository implements ProductRepository {
         priceCents: true,
         imageUrl: true,
         categoryId: true,
+        category: { select: { name: true } },
         createdAt: true,
         updatedAt: true
       }
