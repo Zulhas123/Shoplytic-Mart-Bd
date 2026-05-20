@@ -14,10 +14,29 @@ export default async function ProductsPage({
   const sp = await searchParams;
   const q = sp.q?.trim() ?? "";
   const categoryId = sp.categoryId?.trim() || "";
+  const effectiveCategoryId = categoryId.startsWith("preset:") ? "" : categoryId;
   const [products, categories] = await Promise.all([
-    new ProductUseCases(new PrismaProductRepository()).list({ q, categoryId: categoryId || null }),
+    new ProductUseCases(new PrismaProductRepository()).list({
+      q,
+      categoryId: effectiveCategoryId || null
+    }),
     new CategoryUseCases(new PrismaCategoryRepository()).list()
   ]);
+
+  const presetCategories = [
+    "Electronics",
+    "Fashion",
+    "Home & Kitchen",
+    "Beauty & Personal Care",
+    "Sports & Outdoors",
+    "Books",
+    "Toys & Games",
+    "Grocery",
+    "Health & Wellness",
+    "Automotive",
+    "Office Supplies",
+    "Accessories"
+  ];
 
   return (
     <div className="space-y-4">
@@ -31,7 +50,7 @@ export default async function ProductsPage({
             className="w-64 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
             name="q"
             defaultValue={q}
-            placeholder="Search products…"
+            placeholder="Search products..."
           />
           <select
             className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
@@ -44,6 +63,16 @@ export default async function ProductsPage({
                 {c.name}
               </option>
             ))}
+            {categories.length === 0
+              ? presetCategories.map((name) => (
+                  <option
+                    key={`preset-${name}`}
+                    value={`preset:${name.toLowerCase().replaceAll(" ", "-").replaceAll("&", "and")}`}
+                  >
+                    {name}
+                  </option>
+                ))
+              : null}
           </select>
           <button className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium">
             Search

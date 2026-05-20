@@ -1,0 +1,11 @@
+   ▲ Next.js 15.5.18 (Turbopack)
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.1.101:3001
+   - Environments: .env
+
+ ✓ Starting...
+Creating turbopack project { dir: 'E:\\My Files\\projects\\Shoplytic', testMode: true }
+ ○ Compiling middleware ...
+ ✓ Compiled middleware in 733ms
+ ✓ Ready in 6.7s
+ ○ Compiling / ...

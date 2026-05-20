@@ -25,7 +25,7 @@ export function Navbar() {
           </Link>
 
           {loading ? (
-            <span className="text-slate-400">Loading…</span>
+            <span className="text-slate-400">Loading...</span>
           ) : user ? (
             <>
               <Link className="text-slate-700 hover:text-slate-900" href="/orders">
@@ -51,6 +51,9 @@ export function Navbar() {
             </>
           ) : (
             <>
+              <Link className="text-slate-700 hover:text-slate-900" href="/orders">
+                Orders
+              </Link>
               <Link className="text-slate-700 hover:text-slate-900" href="/login">
                 Login
               </Link>

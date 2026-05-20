@@ -35,7 +35,7 @@ npm install --cache ./.npm-cache
 
 2) Configure environment
 
-Copy `.env.example` → `.env` (a default `.env` is included for local dev).
+Copy `.env.example` -> `.env` (a default `.env` is included for local dev).
 
 3) Start PostgreSQL
 
@@ -55,10 +55,15 @@ npm run prisma:migrate
 npm run dev
 ```
 
+If PowerShell blocks `npm` scripts due to execution policy, run:
+
+```bash
+cmd /c npm run dev
+```
+
 Open `http://localhost:3000`.
 
 ## Notes
 
 - The **first registered user becomes `ADMIN`** (for easy local setup).
 - `JWT_SECRET` must be set (and should be long/random in production).
-
