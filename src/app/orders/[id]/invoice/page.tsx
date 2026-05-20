@@ -2,6 +2,7 @@ import Link from "next/link";
 import { OrderUseCases } from "@/application/use-cases/orders";
 import { getGuestKey } from "@/infrastructure/api/guest/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
+import { InvoiceClientActions } from "@/app/orders/[id]/invoice/InvoiceClientActions";
 
 export const dynamic = "force-dynamic";
 
@@ -27,19 +28,13 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
   const created = new Date(order.createdAt).toLocaleString();
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
-        <Link className="text-sm text-slate-600 underline" href={`/orders/${order.id}`}>
-          Back to order
-        </Link>
-        <button
-          type="button"
-          className="rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
-          onClick={() => window.print()}
-        >
-          Print / Save PDF
-        </button>
-      </div>
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
+          <Link className="text-sm text-slate-600 underline" href={`/orders/${order.id}`}>
+            Back to order
+          </Link>
+          <InvoiceClientActions />
+        </div>
 
       <div className="rounded-lg border border-slate-200 bg-white p-6 print:border-0 print:p-0">
         <div className="flex items-start justify-between gap-4">

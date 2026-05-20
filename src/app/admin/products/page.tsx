@@ -18,6 +18,13 @@ export default async function AdminProductsPage() {
       </div>
 
       <div className="rounded-lg border border-slate-200 bg-white">
+        <div className="hidden grid-cols-12 gap-3 border-b border-slate-100 bg-slate-50 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-slate-600 md:grid">
+          <div className="col-span-4">Name</div>
+          <div className="col-span-2">Category</div>
+          <div className="col-span-2">Price</div>
+          <div className="col-span-2">Image</div>
+          <div className="col-span-2 text-right">Actions</div>
+        </div>
         <div className="divide-y divide-slate-100">
           {products.length === 0 ? (
             <div className="p-6 text-sm text-slate-600">No products yet.</div>

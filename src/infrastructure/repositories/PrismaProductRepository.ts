@@ -28,6 +28,7 @@ export class PrismaProductRepository implements ProductRepository {
         priceCents: true,
         imageUrl: true,
         categoryId: true,
+        category: { select: { name: true } },
         createdAt: true,
         updatedAt: true
       }
@@ -99,4 +100,3 @@ export class PrismaProductRepository implements ProductRepository {
     await prisma.product.delete({ where: { id } });
   }
 }
-
