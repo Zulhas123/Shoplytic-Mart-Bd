@@ -31,17 +31,22 @@ export function DeliveryAgentsClient(props: { initialAgents: DeliveryAgentRow[] 
 
   async function createAgent() {
     setError(null);
+    if (!name.trim()) return setError("Agent name is required");
+    if (!phone.trim()) return setError("Phone is required");
+    if (!address.trim()) return setError("Address is required");
+    if (!vehicleType.trim()) return setError("Vehicle type is required");
+    if (!deliveryZone.trim()) return setError("Delivery zone is required");
     setSaving(true);
     try {
       const res = await fetch("/api/admin/delivery-agents", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          name,
-          phone,
-          address,
-          vehicleType,
-          deliveryZone,
+          name: name.trim(),
+          phone: phone.trim(),
+          address: address.trim(),
+          vehicleType: vehicleType.trim(),
+          deliveryZone: deliveryZone.trim(),
           status: "ACTIVE"
         })
       });
@@ -173,4 +178,3 @@ export function DeliveryAgentsClient(props: { initialAgents: DeliveryAgentRow[] 
     </div>
   );
 }
-

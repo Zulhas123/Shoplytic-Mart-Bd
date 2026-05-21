@@ -2,6 +2,7 @@ import { z } from "zod";
 import { PrismaUserRepository } from "@/infrastructure/repositories/PrismaUserRepository";
 import { requireSession } from "@/infrastructure/api/auth/session";
 import { jsonBadRequest, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 const profileSchema = z.object({
   name: z.string().min(1).max(80),
@@ -16,7 +17,7 @@ export async function PUT(req: Request) {
     const user = await new PrismaUserRepository().updateProfile(session.userId, input);
     return jsonOk({ user });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     return jsonBadRequest(message);
   }

@@ -3,6 +3,7 @@ import { getGuestKey, setGuestKey } from "@/infrastructure/api/guest/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
 import { jsonBadRequest, jsonOk } from "@/shared/utils/http";
 import { NextResponse } from "next/server";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 export async function GET() {
   try {
@@ -12,8 +13,7 @@ export async function GET() {
       : [];
     return jsonOk({ orders });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
-    return jsonBadRequest(message);
+    return jsonBadRequest(errorMessageFromUnknown(e));
   }
 }
 
@@ -29,7 +29,6 @@ export async function POST(req: Request) {
     if (!currentGuestKey) setGuestKey(res, guestKey);
     return res;
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
-    return jsonBadRequest(message);
+    return jsonBadRequest(errorMessageFromUnknown(e));
   }
 }

@@ -2,6 +2,7 @@ import { requireAdmin } from "@/infrastructure/api/auth/session";
 import { PrismaDeliveryRepository } from "@/infrastructure/repositories/PrismaDeliveryRepository";
 import { DeliveryUseCases } from "@/application/use-cases/delivery";
 import { jsonBadRequest, jsonForbidden, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 export async function GET(req: Request) {
   try {
@@ -18,10 +19,9 @@ export async function GET(req: Request) {
     });
     return jsonOk({ deliveries });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     return jsonBadRequest(message);
   }
 }
-

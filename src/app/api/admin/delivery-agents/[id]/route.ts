@@ -2,6 +2,7 @@ import { requireAdmin } from "@/infrastructure/api/auth/session";
 import { PrismaDeliveryRepository } from "@/infrastructure/repositories/PrismaDeliveryRepository";
 import { DeliveryUseCases, createDeliveryAgentSchema } from "@/application/use-cases/delivery";
 import { jsonBadRequest, jsonForbidden, jsonNotFound, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }> }) {
   try {
@@ -12,7 +13,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     const agent = await new DeliveryUseCases(new PrismaDeliveryRepository()).updateAgent(id, input);
     return jsonOk({ agent });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     if (message.includes("Record to update not found")) return jsonNotFound("Delivery agent not found");
@@ -27,11 +28,10 @@ export async function DELETE(_: Request, ctx: { params: Promise<{ id: string }> 
     await new DeliveryUseCases(new PrismaDeliveryRepository()).deleteAgent(id);
     return jsonOk({ ok: true });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     if (message.includes("Record to delete does not exist")) return jsonNotFound("Delivery agent not found");
     return jsonBadRequest(message);
   }
 }
-

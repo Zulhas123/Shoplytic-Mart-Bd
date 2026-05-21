@@ -3,6 +3,7 @@ import { requireAdmin } from "@/infrastructure/api/auth/session";
 import { PrismaUserRepository } from "@/infrastructure/repositories/PrismaUserRepository";
 import { AuthUseCases } from "@/application/use-cases/auth";
 import { jsonBadRequest, jsonForbidden, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 const schema = z.object({
   currentPassword: z.string().min(8).max(72),
@@ -17,10 +18,9 @@ export async function POST(req: Request) {
     await new AuthUseCases(new PrismaUserRepository()).changeAdminPassword(input);
     return jsonOk({ ok: true });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     return jsonBadRequest(message);
   }
 }
-

@@ -3,6 +3,7 @@ import { PrismaUserRepository } from "@/infrastructure/repositories/PrismaUserRe
 import { authCookie } from "@/infrastructure/api/auth/session";
 import { signAuthToken } from "@/shared/utils/jwt";
 import { jsonBadRequest, jsonOk } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 export async function POST(req: Request) {
   try {
@@ -18,7 +19,6 @@ export async function POST(req: Request) {
     res.cookies.set(authCookie.name, token, authCookie.options);
     return res;
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
-    return jsonBadRequest(message);
+    return jsonBadRequest(errorMessageFromUnknown(e));
   }
 }

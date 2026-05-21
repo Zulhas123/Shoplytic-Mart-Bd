@@ -3,6 +3,7 @@ import { requireAdmin } from "@/infrastructure/api/auth/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
 import { OrderUseCases } from "@/application/use-cases/orders";
 import { jsonBadRequest, jsonForbidden, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 const updateStatusSchema = z.object({
   status: z.enum(["PENDING", "CONFIRMED", "REJECTED"])
@@ -18,10 +19,9 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     const order = await new OrderUseCases(new PrismaOrderRepository()).updateStatus(id, input.status);
     return jsonOk({ order });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     return jsonBadRequest(message);
   }
 }
-

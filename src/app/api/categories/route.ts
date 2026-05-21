@@ -3,6 +3,7 @@ import { requireAdmin } from "@/infrastructure/api/auth/session";
 import { PrismaCategoryRepository } from "@/infrastructure/repositories/PrismaCategoryRepository";
 import { prisma } from "@/infrastructure/database/prisma/client";
 import { jsonBadRequest, jsonCreated, jsonForbidden, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 const defaultCategoryNames = [
   "Electronics",
@@ -42,7 +43,7 @@ export async function POST(req: Request) {
     const category = await new CategoryUseCases(new PrismaCategoryRepository()).create(input);
     return jsonCreated({ category });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     return jsonBadRequest(message);

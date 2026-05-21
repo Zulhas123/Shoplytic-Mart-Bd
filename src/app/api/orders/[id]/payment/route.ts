@@ -3,6 +3,7 @@ import { getGuestKey } from "@/infrastructure/api/guest/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
 import { OrderUseCases } from "@/application/use-cases/orders";
 import { jsonBadRequest, jsonForbidden, jsonNotFound, jsonOk } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 const schema = z.object({
   paymentMethod: z.enum(["BKASH", "NAGAD", "MANUAL"]),
@@ -28,7 +29,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     const order = await new OrderUseCases(new PrismaOrderRepository()).submitPayment(id, input);
     return jsonOk({ order });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
-    return jsonBadRequest(message);
+    return jsonBadRequest(errorMessageFromUnknown(e));
   }
 }

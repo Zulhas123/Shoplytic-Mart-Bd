@@ -2,6 +2,7 @@ import { requireAdmin } from "@/infrastructure/api/auth/session";
 import { PrismaDeliveryRepository } from "@/infrastructure/repositories/PrismaDeliveryRepository";
 import { DeliveryUseCases, createDeliveryAgentSchema } from "@/application/use-cases/delivery";
 import { jsonBadRequest, jsonCreated, jsonForbidden, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 export async function GET() {
   try {
@@ -9,7 +10,7 @@ export async function GET() {
     const agents = await new DeliveryUseCases(new PrismaDeliveryRepository()).listAgents();
     return jsonOk({ agents });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     return jsonBadRequest(message);
@@ -24,10 +25,9 @@ export async function POST(req: Request) {
     const agent = await new DeliveryUseCases(new PrismaDeliveryRepository()).createAgent(input);
     return jsonCreated({ agent });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     return jsonBadRequest(message);
   }
 }
-

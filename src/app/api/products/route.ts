@@ -2,6 +2,7 @@ import { ProductUseCases, productCreateSchema } from "@/application/use-cases/pr
 import { requireAdmin } from "@/infrastructure/api/auth/session";
 import { PrismaProductRepository } from "@/infrastructure/repositories/PrismaProductRepository";
 import { jsonBadRequest, jsonCreated, jsonOk, jsonUnauthorized, jsonForbidden } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
     const product = await new ProductUseCases(new PrismaProductRepository()).create(input);
     return jsonCreated({ product });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     return jsonBadRequest(message);

@@ -52,9 +52,22 @@ export function ProductForm(props:
         onSubmit={async (e) => {
           e.preventDefault();
           setError(null);
+          if (!name.trim()) {
+            setError("Name is required");
+            return;
+          }
+          if (!description.trim()) {
+            setError("Description is required");
+            return;
+          }
+          const parsedPrice = Number(price);
+          if (!Number.isFinite(parsedPrice) || parsedPrice < 0) {
+            setError("Price must be a valid number");
+            return;
+          }
           setLoading(true);
           try {
-            const priceCents = Math.round(Number(price) * 100);
+            const priceCents = Math.round(parsedPrice * 100);
 
             let nextImageUrl: string | null = imageUrl.trim() ? imageUrl.trim() : null;
             if (imageFile) {
@@ -67,8 +80,8 @@ export function ProductForm(props:
             }
 
             const payload = {
-              name,
-              description,
+              name: name.trim(),
+              description: description.trim(),
               priceCents,
               imageUrl: nextImageUrl,
               categoryId: categoryId || null

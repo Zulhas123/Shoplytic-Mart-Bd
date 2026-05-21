@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireAdmin } from "@/infrastructure/api/auth/session";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  await requireAdmin();
+  try {
+    await requireAdmin();
+  } catch {
+    redirect("/login?next=/admin");
+  }
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -69,6 +74,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             href="/admin/delivery-reports"
           >
             Delivery reports
+          </Link>
+          <Link
+            className="rounded-md border border-slate-200 bg-white px-3 py-2"
+            href="/admin/manual"
+          >
+            Admin manual
           </Link>
         </nav>
       </div>

@@ -8,6 +8,7 @@ import {
   jsonOk,
   jsonUnauthorized
 } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -25,7 +26,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     const product = await new ProductUseCases(new PrismaProductRepository()).update(id, input);
     return jsonOk({ product });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     return jsonBadRequest(message);
@@ -39,7 +40,7 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ id: str
     await new ProductUseCases(new PrismaProductRepository()).delete(id);
     return jsonOk({ ok: true });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
+    const message = errorMessageFromUnknown(e);
     if (message === "Unauthorized") return jsonUnauthorized();
     if (message === "Forbidden") return jsonForbidden();
     return jsonBadRequest(message);
