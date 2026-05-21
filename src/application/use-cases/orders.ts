@@ -5,6 +5,7 @@ export const createOrderSchema = z.object({
   shipping: z.object({
     name: z.string().min(1).max(80),
     email: z.string().email().optional().nullable(),
+    phone: z.string().trim().min(6).max(30).optional().nullable(),
     address1: z.string().min(1).max(120),
     address2: z.string().max(120).optional().nullable(),
     city: z.string().min(1).max(80),

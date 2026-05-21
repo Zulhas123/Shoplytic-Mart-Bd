@@ -16,6 +16,7 @@ export default function CheckoutPage() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [city, setCity] = useState("");
@@ -52,6 +53,7 @@ export default function CheckoutPage() {
                       shipping: {
                         name,
                         email: email.trim() ? email : null,
+                        phone: phone.trim() ? phone : null,
                         address1,
                         address2: address2 || null,
                         city,
@@ -92,6 +94,17 @@ export default function CheckoutPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
+                />
+              </label>
+              <label className="block space-y-1">
+                <span className="text-sm font-medium">Phone (optional)</span>
+                <input
+                  className="w-full rounded-md border border-slate-200 px-3 py-2"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  inputMode="tel"
+                  autoComplete="tel"
+                  placeholder="e.g. +8801XXXXXXXXX"
                 />
               </label>
               <label className="block space-y-1">

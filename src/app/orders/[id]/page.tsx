@@ -51,6 +51,9 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
               {order.shippingEmail ? (
                 <div className="text-slate-600">{order.shippingEmail}</div>
               ) : null}
+              {order.shippingPhone ? (
+                <div className="text-slate-600">{order.shippingPhone}</div>
+              ) : null}
               <div className="mt-2">
                 <div>{order.shippingAddress1}</div>
                 {order.shippingAddress2 ? <div>{order.shippingAddress2}</div> : null}

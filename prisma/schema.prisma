@@ -78,6 +78,7 @@ model Order {
   paidAt           DateTime?
   shippingName     String
   shippingEmail    String?
+  shippingPhone    String?
   shippingAddress1 String
   shippingAddress2 String?
   shippingCity     String

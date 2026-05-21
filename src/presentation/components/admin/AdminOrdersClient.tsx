@@ -8,9 +8,10 @@ type OrderRow = {
   status: "PENDING" | "CONFIRMED" | "REJECTED" | "PAID" | "SHIPPED" | "DELIVERED" | "CANCELED";
   shippingName: string;
   shippingEmail: string | null;
+  shippingPhone: string | null;
   totalCents: number;
   createdAt: string | Date;
-  items: Array<{ id: string }>;
+  items: Array<{ id: string; quantity: number }>;
 };
 
 function StatusPill({ status }: { status: OrderRow["status"] }) {
@@ -117,9 +118,13 @@ export function AdminOrdersClient(props: {
                     {new Date(o.createdAt).toLocaleString()} - {o.items.length} items
                   </div>
                   <div className="text-slate-600">
-                    {o.shippingName}
+                    Qty: {o.items.reduce((sum, it) => sum + it.quantity, 0)} - Amount: ${(o.totalCents / 100).toFixed(2)}
+                  </div>
+                  <div className="text-slate-600">
+                    Customer: {o.shippingName}
                     {o.shippingEmail ? ` - ${o.shippingEmail}` : ""}
                   </div>
+                  {o.shippingPhone ? <div className="text-slate-600">Phone: {o.shippingPhone}</div> : null}
                 </div>
 
                 <div className="flex items-center gap-3">

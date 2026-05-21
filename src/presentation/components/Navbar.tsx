@@ -96,6 +96,13 @@ export function Navbar() {
                     </Link>
                     <Link
                       className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                      href="/admin/customer-logs"
+                      onClick={() => setSettingsOpen(false)}
+                    >
+                      Customer logs
+                    </Link>
+                    <Link
+                      className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
                       href="/admin/orders"
                       onClick={() => setSettingsOpen(false)}
                     >

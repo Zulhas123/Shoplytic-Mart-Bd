@@ -6,6 +6,7 @@ export type CreateOrderInput = {
   shipping: {
     name: string;
     email?: string | null;
+    phone?: string | null;
     address1: string;
     address2?: string | null;
     city: string;

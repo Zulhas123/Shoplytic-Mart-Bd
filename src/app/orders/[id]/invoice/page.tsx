@@ -55,6 +55,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
             <div className="mt-2 text-sm text-slate-700">
               <div className="font-medium">{order.shippingName}</div>
               {order.shippingEmail ? <div className="text-slate-600">{order.shippingEmail}</div> : null}
+              {order.shippingPhone ? <div className="text-slate-600">{order.shippingPhone}</div> : null}
               <div className="mt-2 text-slate-700">
                 <div>{order.shippingAddress1}</div>
                 {order.shippingAddress2 ? <div>{order.shippingAddress2}</div> : null}

@@ -27,6 +27,7 @@ export type Order = {
   paidAt?: Date | null;
   shippingName: string;
   shippingEmail: string | null;
+  shippingPhone: string | null;
   shippingAddress1: string;
   shippingAddress2: string | null;
   shippingCity: string;
