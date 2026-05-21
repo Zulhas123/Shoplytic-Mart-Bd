@@ -52,6 +52,24 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           >
             Customer logs
           </Link>
+          <Link
+            className="rounded-md border border-slate-200 bg-white px-3 py-2"
+            href="/admin/delivery-agents"
+          >
+            Delivery agents
+          </Link>
+          <Link
+            className="rounded-md border border-slate-200 bg-white px-3 py-2"
+            href="/admin/deliveries"
+          >
+            Deliveries
+          </Link>
+          <Link
+            className="rounded-md border border-slate-200 bg-white px-3 py-2"
+            href="/admin/delivery-reports"
+          >
+            Delivery reports
+          </Link>
         </nav>
       </div>
       {children}

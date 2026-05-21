@@ -106,6 +106,27 @@ export function Navbar() {
                     </Link>
                     <Link
                       className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                      href="/admin/delivery-agents"
+                      onClick={() => setSettingsOpen(false)}
+                    >
+                      Delivery agents
+                    </Link>
+                    <Link
+                      className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                      href="/admin/deliveries"
+                      onClick={() => setSettingsOpen(false)}
+                    >
+                      Deliveries
+                    </Link>
+                    <Link
+                      className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                      href="/admin/delivery-reports"
+                      onClick={() => setSettingsOpen(false)}
+                    >
+                      Delivery reports
+                    </Link>
+                    <Link
+                      className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
                       href="/admin/orders"
                       onClick={() => setSettingsOpen(false)}
                     >

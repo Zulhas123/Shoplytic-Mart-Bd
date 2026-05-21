@@ -29,6 +29,24 @@ enum PaymentMethod {
   MANUAL
 }
 
+enum DeliveryAgentStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum DeliveryStatus {
+  ASSIGNED
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
+enum DeliveryPaymentStatus {
+  UNPAID
+  PAID
+  COD
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String?  @unique
@@ -89,6 +107,7 @@ model Order {
 
   user  User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   items OrderItem[]
+  delivery Delivery?
 
   @@index([userId])
   @@index([guestKey])
@@ -107,4 +126,44 @@ model OrderItem {
 
   @@index([orderId])
   @@index([productId])
+}
+
+model DeliveryAgent {
+  id           String              @id @default(cuid())
+  name         String
+  phone        String              @unique
+  address      String
+  vehicleType  String
+  deliveryZone String
+  status       DeliveryAgentStatus @default(ACTIVE)
+  joinedAt     DateTime            @default(now())
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  deliveries Delivery[]
+}
+
+model Delivery {
+  id                 String                @id @default(cuid())
+  orderId             String                @unique
+  agentId             String
+  status              DeliveryStatus        @default(ASSIGNED)
+  paymentStatus       DeliveryPaymentStatus @default(UNPAID)
+  deliveryChargeCents Int                   @default(0)
+  totalAmountCents    Int
+  deliveredAt         DateTime?
+  canceledAt          DateTime?
+  deliveryDate        DateTime?
+  customerSnapshot    Json
+  itemsSnapshot       Json
+  categoryBreakdown   Json
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  agent DeliveryAgent @relation(fields: [agentId], references: [id], onDelete: Restrict)
+
+  @@index([agentId])
+  @@index([status])
+  @@index([paymentStatus])
 }
