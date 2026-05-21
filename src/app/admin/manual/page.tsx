@@ -70,6 +70,64 @@ export default function AdminManualPage() {
       </div>
 
       <div className="rounded-lg border border-slate-200 bg-white p-6">
+        <h3 className="text-base font-semibold">Deploy to Vercel (A to Z)</h3>
+        <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-slate-700">
+          <li>
+            Create a hosted PostgreSQL database (recommended: Vercel Storage → Postgres, or Neon/Supabase/Railway).
+          </li>
+          <li>
+            Copy the database connection string and set it in Vercel project settings → Environment Variables:
+            <div className="mt-2 rounded-md border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700">
+              <div>
+                <span className="font-semibold">Key:</span> DATABASE_URL
+              </div>
+              <div className="mt-1">
+                <span className="font-semibold">Value (format):</span>{" "}
+                postgresql://USER:PASSWORD@HOST:5432/DBNAME?schema=public
+              </div>
+              <div className="mt-1 text-slate-600">Important: do not use localhost on Vercel.</div>
+            </div>
+          </li>
+          <li>
+            Generate a strong secret and set it in Vercel → Environment Variables:
+            <div className="mt-2 rounded-md border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700">
+              <div>
+                <span className="font-semibold">Key:</span> JWT_SECRET
+              </div>
+              <div className="mt-1">
+                <span className="font-semibold">Value:</span> a long random string (32+ chars).
+              </div>
+              <div className="mt-1 text-slate-600">
+                Example generation: node -e &quot;console.log(require(&apos;crypto&apos;).randomBytes(48).toString(&apos;hex&apos;))&quot;
+              </div>
+            </div>
+          </li>
+          <li>
+            (Recommended) Set the site URL for SEO links:
+            <div className="mt-2 rounded-md border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700">
+              <div>
+                <span className="font-semibold">Key:</span> NEXT_PUBLIC_SITE_URL
+              </div>
+              <div className="mt-1">
+                <span className="font-semibold">Value:</span> https://your-project.vercel.app
+              </div>
+            </div>
+          </li>
+          <li>
+            Run database migrations against the production database (Vercel does not run Prisma migrations automatically).
+            Run from your local machine (with DATABASE_URL pointing to production) or from CI:
+            <div className="mt-2 rounded-md border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700">
+              npm run prisma:migrate
+            </div>
+          </li>
+          <li>Deploy the project in Vercel and verify pages load (Products, Checkout, Orders, Admin).</li>
+          <li>
+            Note on product image uploads: this app stores uploads on the local filesystem in development. On Vercel you must use external storage (Vercel Blob / S3) for persistent uploads.
+          </li>
+        </ol>
+      </div>
+
+      <div className="rounded-lg border border-slate-200 bg-white p-6">
         <h3 className="text-base font-semibold">Security & settings</h3>
         <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
           <li>
@@ -81,4 +139,3 @@ export default function AdminManualPage() {
     </div>
   );
 }
-
