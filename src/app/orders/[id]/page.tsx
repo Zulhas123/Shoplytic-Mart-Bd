@@ -2,6 +2,7 @@ import Link from "next/link";
 import { OrderUseCases } from "@/application/use-cases/orders";
 import { getGuestKey } from "@/infrastructure/api/guest/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
+import { formatDateTime, formatMoneyFromCents } from "@/shared/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -32,11 +33,11 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h1 className="text-xl font-semibold">Order {order.id.slice(0, 8).toUpperCase()}</h1>
-            <p className="text-sm text-slate-600">{new Date(order.createdAt).toLocaleString()}</p>
+            <p className="text-sm text-slate-600">{formatDateTime(order.createdAt)}</p>
           </div>
           <div className="text-right">
             <div className="text-xs text-slate-600">Total</div>
-            <div className="text-lg font-semibold">${(order.totalCents / 100).toFixed(2)}</div>
+            <div className="text-lg font-semibold">{formatMoneyFromCents(order.totalCents)}</div>
             <Link className="mt-2 inline-block text-sm font-semibold text-slate-900 underline" href={`/orders/${order.id}/invoice`}>
               Invoice
             </Link>
@@ -74,7 +75,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                     <div className="text-slate-600">Qty: {it.quantity}</div>
                   </div>
                   <div className="font-medium">
-                    ${((it.priceCents * it.quantity) / 100).toFixed(2)}
+                    {formatMoneyFromCents(it.priceCents * it.quantity)}
                   </div>
                 </div>
               ))}

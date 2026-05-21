@@ -1,5 +1,6 @@
 import { OrderUseCases } from "@/application/use-cases/orders";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
+import { formatDateTime, formatMoneyFromCents } from "@/shared/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -32,8 +33,8 @@ export default async function AdminCustomerLogsPage() {
                       <div className="text-slate-600">Products: {productNames || "—"}</div>
                     </div>
                     <div className="text-right text-slate-600">
-                      <div>{new Date(o.createdAt).toLocaleString()}</div>
-                      <div className="font-semibold text-slate-900">${(o.totalCents / 100).toFixed(2)}</div>
+                      <div>{formatDateTime(o.createdAt)}</div>
+                      <div className="font-semibold text-slate-900">{formatMoneyFromCents(o.totalCents)}</div>
                     </div>
                   </div>
                 </div>

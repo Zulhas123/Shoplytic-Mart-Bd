@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { useCartStore } from "@/presentation/stores/cartStore";
+import { formatMoneyFromCents } from "@/shared/utils/format";
 
 export default function CartPage() {
   const items = useCartStore((s) => s.items);
@@ -35,7 +36,7 @@ export default function CartPage() {
                   <div className="min-w-0 flex-1">
                     <div className="truncate font-medium">{it.name}</div>
                     <div className="text-sm text-slate-600">
-                      ${(it.priceCents / 100).toFixed(2)}
+                      {formatMoneyFromCents(it.priceCents)}
                     </div>
                   </div>
                   <input
@@ -59,7 +60,7 @@ export default function CartPage() {
 
           <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-white p-4">
             <div className="text-sm text-slate-600">Total</div>
-            <div className="text-base font-semibold">${(totalCents / 100).toFixed(2)}</div>
+            <div className="text-base font-semibold">{formatMoneyFromCents(totalCents)}</div>
           </div>
 
           <div className="flex items-center justify-end gap-3">
@@ -75,4 +76,3 @@ export default function CartPage() {
     </div>
   );
 }
-

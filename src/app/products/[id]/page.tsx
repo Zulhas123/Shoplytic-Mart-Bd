@@ -3,15 +3,31 @@ import Image from "next/image";
 import { ProductUseCases } from "@/application/use-cases/products";
 import { PrismaProductRepository } from "@/infrastructure/repositories/PrismaProductRepository";
 import { ProductAddButton } from "@/presentation/components/ProductAddButton";
+import type { Metadata } from "next";
+import { formatMoneyFromCents, hashToInt } from "@/shared/utils/format";
 
 export const dynamic = "force-dynamic";
 
-function hashToInt(input: string) {
-  let hash = 0;
-  for (let i = 0; i < input.length; i++) {
-    hash = (hash * 31 + input.charCodeAt(i)) >>> 0;
-  }
-  return hash;
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const product = await new ProductUseCases(new PrismaProductRepository()).getById(id);
+  if (!product) return { title: "Product not found", robots: { index: false, follow: false } };
+
+  const imageUrl = product.imageUrl?.startsWith("/") ? product.imageUrl : undefined;
+  return {
+    title: product.name,
+    description: product.description,
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      images: imageUrl ? [{ url: imageUrl }] : undefined
+    },
+    twitter: {
+      title: product.name,
+      description: product.description,
+      images: imageUrl ? [imageUrl] : undefined
+    }
+  };
 }
 
 export default async function ProductDetailsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -29,7 +45,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
     );
   }
 
-  const price = (product.priceCents / 100).toFixed(2);
+  const price = formatMoneyFromCents(product.priceCents);
   const h = hashToInt(product.id);
   const discountPct = 5 + (h % 26);
   const reviews = 20 + (h % 380);
@@ -71,7 +87,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
             </div>
             <div className="text-right">
               <div className="text-xs text-slate-600">Price</div>
-              <div className="text-2xl font-semibold text-slate-900">${price}</div>
+              <div className="text-2xl font-semibold text-slate-900">{price}</div>
             </div>
           </div>
 

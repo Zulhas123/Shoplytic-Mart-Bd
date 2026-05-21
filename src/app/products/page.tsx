@@ -3,8 +3,14 @@ import { CategoryUseCases } from "@/application/use-cases/categories";
 import { PrismaProductRepository } from "@/infrastructure/repositories/PrismaProductRepository";
 import { PrismaCategoryRepository } from "@/infrastructure/repositories/PrismaCategoryRepository";
 import { ProductCard } from "@/presentation/components/ProductCard";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Products",
+  description: "Browse and search products available in Shoplytic."
+};
 
 export default async function ProductsPage({
   searchParams

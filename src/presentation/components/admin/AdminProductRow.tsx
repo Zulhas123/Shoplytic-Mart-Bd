@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { formatMoneyFromCents } from "@/shared/utils/format";
 
 export function AdminProductRow(props: {
   product: {
@@ -31,7 +32,7 @@ export function AdminProductRow(props: {
       </div>
 
       <div className="md:col-span-2">
-        <div className="text-sm font-medium text-slate-900">${(props.product.priceCents / 100).toFixed(2)}</div>
+        <div className="text-sm font-medium text-slate-900">{formatMoneyFromCents(props.product.priceCents)}</div>
       </div>
 
       <div className="md:col-span-2">

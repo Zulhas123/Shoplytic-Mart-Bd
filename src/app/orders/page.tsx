@@ -2,6 +2,7 @@ import Link from "next/link";
 import { OrderUseCases } from "@/application/use-cases/orders";
 import { getGuestKey } from "@/infrastructure/api/guest/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
+import { formatDateTime, formatMoneyFromCents } from "@/shared/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -29,11 +30,11 @@ export default async function OrdersPage() {
                     Order {o.id.slice(0, 8).toUpperCase()}
                   </Link>
                   <div className="text-sm text-slate-600">
-                    {new Date(o.createdAt).toLocaleString()} • {o.items.length} items
+                    {formatDateTime(o.createdAt)} • {o.items.length} items
                   </div>
                   <div className="text-sm text-slate-600">Phone: {o.shippingPhone ?? "Not saved (run prisma migrate)"}</div>
                 </div>
-                <div className="text-sm font-semibold">${(o.totalCents / 100).toFixed(2)}</div>
+                <div className="text-sm font-semibold">{formatMoneyFromCents(o.totalCents)}</div>
               </div>
             ))}
           </div>

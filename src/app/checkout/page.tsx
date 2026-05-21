@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/presentation/stores/cartStore";
+import { formatMoneyFromCents } from "@/shared/utils/format";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -164,13 +165,13 @@ export default function CheckoutPage() {
                     <div className="text-slate-600">Qty: {it.quantity}</div>
                   </div>
                   <div className="font-medium">
-                    ${((it.priceCents * it.quantity) / 100).toFixed(2)}
+                    {formatMoneyFromCents(it.priceCents * it.quantity)}
                   </div>
                 </div>
               ))}
               <div className="flex items-center justify-between border-t border-slate-100 pt-3 text-sm">
                 <span className="text-slate-600">Total</span>
-                <span className="text-base font-semibold">${(totalCents / 100).toFixed(2)}</span>
+                <span className="text-base font-semibold">{formatMoneyFromCents(totalCents)}</span>
               </div>
             </div>
           </div>

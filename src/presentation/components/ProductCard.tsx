@@ -4,14 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/presentation/stores/cartStore";
 import { useMemo, useState } from "react";
-
-function hashToInt(input: string) {
-  let hash = 0;
-  for (let i = 0; i < input.length; i++) {
-    hash = (hash * 31 + input.charCodeAt(i)) >>> 0;
-  }
-  return hash;
-}
+import { hashToInt, formatMoneyFromCents } from "@/shared/utils/format";
 
 export function ProductCard(props: {
   product: {
@@ -24,7 +17,7 @@ export function ProductCard(props: {
 }) {
   const addItem = useCartStore((s) => s.addItem);
   const { product } = props;
-  const price = (product.priceCents / 100).toFixed(2);
+  const price = formatMoneyFromCents(product.priceCents);
   const [showDiscount, setShowDiscount] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
 
@@ -99,7 +92,7 @@ export function ProductCard(props: {
         ) : null}
 
         <div className="flex items-center justify-between gap-3 pt-1">
-          <span className="text-sm font-semibold text-slate-900">${price}</span>
+          <span className="text-sm font-semibold text-slate-900">{price}</span>
           <button
             className="rounded-md bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800"
             onClick={() =>

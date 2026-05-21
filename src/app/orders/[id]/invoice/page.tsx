@@ -3,6 +3,7 @@ import { OrderUseCases } from "@/application/use-cases/orders";
 import { getGuestKey } from "@/infrastructure/api/guest/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
 import { InvoiceClientActions } from "@/app/orders/[id]/invoice/InvoiceClientActions";
+import { formatDateTime, formatMoneyFromCents } from "@/shared/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +26,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
   }
 
   const orderCode = order.id.slice(0, 8).toUpperCase();
-  const created = new Date(order.createdAt).toLocaleString();
+  const created = formatDateTime(order.createdAt);
 
   return (
       <div className="space-y-4">
@@ -45,7 +46,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
           </div>
           <div className="text-right">
             <div className="text-xs text-slate-600">Total</div>
-            <div className="text-lg font-semibold">${(order.totalCents / 100).toFixed(2)}</div>
+            <div className="text-lg font-semibold">{formatMoneyFromCents(order.totalCents)}</div>
           </div>
         </div>
 
@@ -146,10 +147,10 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
                   <td className="px-4 py-3 font-medium text-slate-900">{it.name}</td>
                   <td className="px-4 py-3 text-slate-700">{it.quantity}</td>
                   <td className="px-4 py-3 text-slate-700">
-                    ${((it.priceCents / 100) as number).toFixed(2)}
+                    {formatMoneyFromCents(it.priceCents)}
                   </td>
                   <td className="px-4 py-3 text-right font-medium text-slate-900">
-                    ${(((it.priceCents * it.quantity) / 100) as number).toFixed(2)}
+                    {formatMoneyFromCents(it.priceCents * it.quantity)}
                   </td>
                 </tr>
               ))}
@@ -159,7 +160,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
 
         <div className="mt-4 flex items-center justify-end gap-3 text-sm">
           <div className="text-slate-600">Total</div>
-          <div className="text-base font-semibold text-slate-900">${(order.totalCents / 100).toFixed(2)}</div>
+          <div className="text-base font-semibold text-slate-900">{formatMoneyFromCents(order.totalCents)}</div>
         </div>
       </div>
     </div>

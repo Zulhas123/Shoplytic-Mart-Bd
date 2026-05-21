@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { formatDateTime, formatMoneyFromCents, sumQuantity } from "@/shared/utils/format";
 
 type OrderRow = {
   id: string;
@@ -115,10 +116,10 @@ export function AdminOrdersClient(props: {
                     <StatusPill status={o.status} />
                   </div>
                   <div className="text-slate-600">
-                    {new Date(o.createdAt).toLocaleString()} - {o.items.length} items
+                    {formatDateTime(o.createdAt)} - {o.items.length} items
                   </div>
                   <div className="text-slate-600">
-                    Qty: {o.items.reduce((sum, it) => sum + it.quantity, 0)} - Amount: ${(o.totalCents / 100).toFixed(2)}
+                    Qty: {sumQuantity(o.items)} - Amount: {formatMoneyFromCents(o.totalCents)}
                   </div>
                   <div className="text-slate-600">
                     Customer: {o.shippingName}
@@ -129,7 +130,7 @@ export function AdminOrdersClient(props: {
 
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className="font-semibold">${(o.totalCents / 100).toFixed(2)}</div>
+                    <div className="font-semibold">{formatMoneyFromCents(o.totalCents)}</div>
                     <div className="text-xs text-slate-500">Total</div>
                   </div>
 
