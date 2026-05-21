@@ -4,6 +4,9 @@ import { DeliveryUseCases, assignDeliverySchema } from "@/application/use-cases/
 import { jsonBadRequest, jsonForbidden, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
 import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }> }) {
   try {
     await requireAdmin();

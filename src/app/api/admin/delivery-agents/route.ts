@@ -4,6 +4,9 @@ import { DeliveryUseCases, createDeliveryAgentSchema } from "@/application/use-c
 import { jsonBadRequest, jsonCreated, jsonForbidden, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
 import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     await requireAdmin();

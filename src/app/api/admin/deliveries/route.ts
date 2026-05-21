@@ -4,6 +4,9 @@ import { DeliveryUseCases } from "@/application/use-cases/delivery";
 import { jsonBadRequest, jsonForbidden, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
 import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   try {
     await requireAdmin();
