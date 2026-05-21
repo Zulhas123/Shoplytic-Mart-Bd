@@ -41,6 +41,9 @@ export function Navbar() {
           <Link className="text-slate-700 hover:text-slate-900" href="/products">
             Products
           </Link>
+          <Link className="text-slate-700 hover:text-slate-900" href="/manual">
+            User manual
+          </Link>
           <Link className="text-slate-700 hover:text-slate-900" href="/cart">
             Cart ({itemsCount})
           </Link>

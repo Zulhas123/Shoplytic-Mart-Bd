@@ -124,7 +124,7 @@ export function AdminOrdersClient(props: {
                     Customer: {o.shippingName}
                     {o.shippingEmail ? ` - ${o.shippingEmail}` : ""}
                   </div>
-                  {o.shippingPhone ? <div className="text-slate-600">Phone: {o.shippingPhone}</div> : null}
+                  <div className="text-slate-600">Phone: {o.shippingPhone ?? "Not saved (run prisma migrate)"}</div>
                 </div>
 
                 <div className="flex items-center gap-3">

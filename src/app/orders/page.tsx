@@ -31,6 +31,7 @@ export default async function OrdersPage() {
                   <div className="text-sm text-slate-600">
                     {new Date(o.createdAt).toLocaleString()} • {o.items.length} items
                   </div>
+                  <div className="text-sm text-slate-600">Phone: {o.shippingPhone ?? "Not saved (run prisma migrate)"}</div>
                 </div>
                 <div className="text-sm font-semibold">${(o.totalCents / 100).toFixed(2)}</div>
               </div>

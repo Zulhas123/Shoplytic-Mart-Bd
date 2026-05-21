@@ -26,7 +26,7 @@ export default async function AdminCustomerLogsPage() {
                     <div className="space-y-1">
                       <div className="font-medium">{o.shippingName}</div>
                       <div className="text-slate-600">
-                        {o.shippingPhone ? `Phone: ${o.shippingPhone}` : "Phone: —"}
+                        {o.shippingPhone ? `Phone: ${o.shippingPhone}` : "Phone: Not saved (run prisma migrate)"} 
                         {o.shippingEmail ? ` • Email: ${o.shippingEmail}` : " • Email: —"}
                       </div>
                       <div className="text-slate-600">Products: {productNames || "—"}</div>
@@ -45,4 +45,3 @@ export default async function AdminCustomerLogsPage() {
     </div>
   );
 }
-
