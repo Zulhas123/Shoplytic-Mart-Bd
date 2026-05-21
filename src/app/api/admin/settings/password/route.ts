@@ -5,6 +5,9 @@ import { AuthUseCases } from "@/application/use-cases/auth";
 import { jsonBadRequest, jsonForbidden, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
 import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 const schema = z.object({
   currentPassword: z.string().min(8).max(72),
   newPassword: z.string().min(8).max(72)

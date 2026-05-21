@@ -2,6 +2,10 @@ import { OrderUseCases } from "@/application/use-cases/orders";
 import { getGuestKey } from "@/infrastructure/api/guest/session";
 import { PrismaOrderRepository } from "@/infrastructure/repositories/PrismaOrderRepository";
 import { jsonBadRequest, jsonNotFound, jsonOk } from "@/shared/utils/http";
+import { errorMessageFromUnknown } from "@/shared/utils/errors";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -13,7 +17,6 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
     if (!order) return jsonNotFound("Order not found");
     return jsonOk({ order });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Invalid request";
-    return jsonBadRequest(message);
+    return jsonBadRequest(errorMessageFromUnknown(e));
   }
 }

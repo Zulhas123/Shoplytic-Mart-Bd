@@ -5,6 +5,9 @@ import { signAuthToken } from "@/shared/utils/jwt";
 import { jsonBadRequest, jsonOk } from "@/shared/utils/http";
 import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();

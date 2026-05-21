@@ -4,6 +4,9 @@ import { PrismaProductRepository } from "@/infrastructure/repositories/PrismaPro
 import { jsonBadRequest, jsonCreated, jsonOk, jsonUnauthorized, jsonForbidden } from "@/shared/utils/http";
 import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const q = searchParams.get("q");

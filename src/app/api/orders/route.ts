@@ -5,6 +5,9 @@ import { jsonBadRequest, jsonOk } from "@/shared/utils/http";
 import { NextResponse } from "next/server";
 import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const guestKey = await getGuestKey();

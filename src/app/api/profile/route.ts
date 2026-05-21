@@ -4,6 +4,9 @@ import { requireSession } from "@/infrastructure/api/auth/session";
 import { jsonBadRequest, jsonOk, jsonUnauthorized } from "@/shared/utils/http";
 import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 const profileSchema = z.object({
   name: z.string().min(1).max(80),
   address: z.string().max(200).optional().nullable()

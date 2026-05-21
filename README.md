@@ -63,6 +63,26 @@ cmd /c npm run dev
 
 Open `http://localhost:3000`.
 
+## Deploy to Vercel
+
+### Required environment variables
+
+- `DATABASE_URL` (PostgreSQL connection string)
+- `JWT_SECRET` (long random secret)
+- `NEXT_PUBLIC_SITE_URL` (recommended, e.g. `https://your-domain.vercel.app`)
+
+### Database migrations
+
+Vercel does not automatically run Prisma migrations. Run migrations against your production DB from your local machine or CI:
+
+```bash
+npm run prisma:migrate
+```
+
+### Product image uploads (important)
+
+This project writes uploads to `public/uploads` in development. On Vercel serverless, the filesystem is ephemeral, so you must use an external storage provider (Vercel Blob / S3). The upload API will return a clear error message on Vercel if external storage is not configured.
+
 ## Notes
 
 - The **first registered user becomes `ADMIN`** (for easy local setup).

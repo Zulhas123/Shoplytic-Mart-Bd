@@ -5,6 +5,9 @@ import { OrderUseCases } from "@/application/use-cases/orders";
 import { jsonBadRequest, jsonForbidden, jsonNotFound, jsonOk } from "@/shared/utils/http";
 import { errorMessageFromUnknown } from "@/shared/utils/errors";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 const schema = z.object({
   paymentMethod: z.enum(["BKASH", "NAGAD", "MANUAL"]),
   paymentReference: z.string().min(3).max(120)
